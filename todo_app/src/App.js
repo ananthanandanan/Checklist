@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, FormControl, InputLabel, Input } from '@material-ui/core';
 import './App.css';
 import Todo from './Todo';
+import db from './firebase';
+import firebase from 'firebase';
 
 function App() {
 
-  const [todos, setTodos] = useState(['Go for walking', 'Go to gym', 'Talk the friends']);
+  const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
-  console.log("----", input);
+  
+  //when the app loads we need to listen the database and fetch the new todos as they get add/remove
+  //useEffect(function, dependecies); -> its a hook which runs once when app loads
+  useEffect(() => {
+    //this code here fires.. when app.js
+    db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+
+      console.log(snapshot.docs.map(doc => doc.data().todo));
+      setTodos(snapshot.docs.map(doc => doc.data().todo));// doc.data() is object of doc with todo field 
+    })
+  }, []);
 
   const addTodos = (event)=> {
     // adds the input to the todo
     // ...todos is called a spread or in the sense it prepends what was already there with the incoming input
     event.preventDefault();  // don't fire the referesh button 
-    console.log("|||||This worked");
-    setTodos([...todos, input]);
+    //console.log("|||||This worked");
+    //setTodos([...todos, input]);
+    db.collection('todos').add({
+      todo : input,
+      timestamp : firebase.firestore.FieldValue.serverTimestamp()
+    });
     setInput('');//reset the input state
 
 
