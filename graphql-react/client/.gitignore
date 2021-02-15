@@ -2,13 +2,9 @@
 
 # dependencies
 /node_modules
-/graphql-react/node_modules
-/graphql-react/package-lock.json
 /.pnp
 .pnp.js
-firebase.js
-todo_app/package.json
-todo_app/package-lock.json
+/package-lock.json
 
 # testing
 /coverage
@@ -23,8 +19,6 @@ todo_app/package-lock.json
 .env.test.local
 .env.production.local
 
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/graphql-react/MOCK_DATA.json
